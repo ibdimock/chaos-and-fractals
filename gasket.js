@@ -1,14 +1,8 @@
-function drawGasket(depth) {
+function drawGasket() {
 	var gask = document.getElementById("gasket");
 	var ctx = gask.getContext("2d");
 	ctx.clearRect(0,0,600,600);
-	//var depth_radios = document.getElementsByName("depth");
-	// var depth;
-	// for(var i = 0; i < depth_radios.length; i++) {
-		// if(depth_radios[i].type === 'radio' && radios[i].checked) {
-			// depth = depth_radios[i].value;
-		// }
-	// }
+	var depth = document.getElementById("depth_slider").value;
 	
 	var layers = new Array(depth);
 	var c01 = makeCircle(300, 150, 129.903, 1);
