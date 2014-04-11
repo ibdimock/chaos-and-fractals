@@ -1,36 +1,74 @@
+var layers;
+var circles;
+
 function drawGasket() {
 	var gask = document.getElementById("gasket");
 	var ctx = gask.getContext("2d");
 	ctx.clearRect(0,0,600,600);
 	var depth = document.getElementById("depth_slider").value;
+	document.getElementById("depth_out").value = depth;
 	
-	var layers = new Array(depth);
-	var c01 = makeCircle(300, 150, 129.903, 1);
-	var c02 = makeCircle(170.096, 375, 129.903, 1);
-	var c03 = makeCircle(429.903, 375, 129.903, 1);
-	drawCircle(ctx, c01);
-	drawCircle(ctx, c02);
-	drawCircle(ctx, c03);
-	var c04 = makeCircle(300, 300, 279.90206, -1);
-	drawCircle(ctx, c04);
+	for(var d = 0; d < depth; d++) {
+		for(var i = 0; i < circles[d].length; i++){
+			drawCircle(ctx, circles[d][i]);
+		}
+	}
+	
+}
+
+function updateRatios() {
+	var r1 = document.getElementById("c1_slider").value;
+	document.getElementById("c1_out").value = (1 + r1*0.1).toFixed(2);
+	var r2 = document.getElementById("c2_slider").value;
+	document.getElementById("c2_out").value = (1 + r2*0.1).toFixed(2);
+}
+
+window.onload = function() {
+	document.getElementById("depth_slider").value = 1;
+	document.getElementById("depth_out").value = 1;
+	document.getElementById("c1_slider").value = 0;
+	document.getElementById("c1_out").value = (1.00).toFixed(2);
+	document.getElementById("c2_slider").value = 0;
+	document.getElementById("c2_out").value = (1.00).toFixed(2);
+	genGasket();
+	drawGasket();
+}
+
+function genGasket() {
+	var depth = document.getElementById("depth_slider").max;
+	document.getElementById("depth_out").value = 1;
+	
+	var r1 = document.getElementById("c1_slider").value;
+	var r2 = document.getElementById("c2_slider").value;
+	
+	layers = new Array(depth);
+	circles = new Array(depth);
+	var outer_r = 279.90206;
+	var c04 = makeCircle(300, 300, outer_r, -1);
+	var cs = calcBase((1 + r1*0.1), (1 + r2*0.1), -outer_r);
+	var c01 = cs[0];
+	var c02 = cs[1];
+	var c03 = cs[2];
+//	var c01 = makeCircle(300, 150, 129.903, 1);
+//	var c02 = makeCircle(170.096, 375, 129.903, 1);
+//	var c03 = makeCircle(429.903, 375, 129.903, 1);
+	
 	layers[0] = [[c01,c02,c03],[c01,c02,c04],[c01,c03,c04],[c02,c03,c04]];
+	circles[0] =  [c01,c02,c03,c04];
 	for(var i = 1; i < depth; i++ ){
 		layers[i] = [];
-		var toDraw = [];
+		circles[i] = [];
 		for(var j = 0; j < layers[i-1].length; j++){
 			var c1 = layers[i-1][j][0];
 			var c2 = layers[i-1][j][1];
 			var c3 = layers[i-1][j][2];
 			var c4 = calcCircle(c1, c2, c3, 1);
-			if(c4.r > 0.5) {
-				toDraw.push(c4);
+			if(c4.r > 1) {
+				circles[i].push(c4);
 				layers[i].push([c1,c2,c4]);
 				layers[i].push([c1,c3,c4]);
 				layers[i].push([c2,c3,c4]);
 			}
-		}
-		for(var d = 0; d < toDraw.length; d++) {
-			drawCircle(ctx, toDraw[d]);
 		}
 	}
 }
@@ -63,6 +101,37 @@ function calcCircle(c1, c2, c3, curve) {
 		var c4 = makeCircle(z4b.real, z4b.im, Math.abs(1/k4.real), curve.real);
 	}
 	return c4;
+}
+
+function calcBase(r1, r2, outer) {
+	a = 1 + 1/(r1*r1) + 1/(r2*r2) - 2*(1/(r1*r2) + 1/r1 + 1/r2);
+	b = -2*(1/(r1*outer) + 1/(r2*outer) + 1/outer);
+	c = 1/(outer*outer);
+	
+
+	basei = (-b - Math.sqrt(b*b - 4*a*c))/(2*a);
+	base = 1/basei;
+	
+	
+	outer = Math.abs(outer);
+	x3 = 300;
+	y3 = 300 + outer - base;
+	c03 = makeCircle(x3, y3, base, 1);
+	a1 = (1+r1)*base;
+	b1 = outer - base;
+	c1 = outer - r1*base;
+	theta1 = Math.PI/2 - Math.acos((-c1*c1 + a1*a1 + b1*b1)/(2*a1*b1));
+	c01 = makeCircle(x3 - Math.cos(theta1)*(1+r1)*base,
+		y3 - Math.sin(theta1)*(1+r1)*base, r1*base, 1);
+		
+	a2 = (1+r2)*base;
+	b2 = outer - base;
+	c2 = outer - r2*base;
+	theta2 = Math.PI/2 - Math.acos((-c2*c2 + a2*a2 + b2*b2)/(2*a2*b2));
+	c02 = makeCircle(x3 + Math.cos(theta2)*(1+r2)*base,
+		y3 - Math.sin(theta2)*(1+r2)*base, r2*base, 1);
+		
+	return [c01,c02,c03];	
 }
 
 function makeCircle(x, y, r, curve){
@@ -262,3 +331,4 @@ var sinh = function (x) {
 var cosh = function (x) {
 	return (Math.pow(Math.E, x) + Math.pow(Math.E, -x)) / 2;
 };
+// End Library

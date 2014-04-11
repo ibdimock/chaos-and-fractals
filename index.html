@@ -1,5 +1,6 @@
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="gasket.css">
 	<script src="gasket.js"></script>
 </head>
 <body>
@@ -7,8 +8,13 @@
 	<canvas id="gasket" width="600" height="600"
 		style="border:5px solid #000000">
 	</canvas>
-	<br/>
-	<b>Depth:</b>	
-		0<input type="range" id="depth_slider" max=20 min=1 step=1 value=1 onmouseup="drawGasket()"/>20
+	<br/><b>Depth: <output for="depth_slider" id="depth_out"></output></b>	
+	<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" value=1/>
+		
+	<br/><b>1st Circle Ratio: <output for="c1_slider" id="c1_out">1.00</output></b>
+		<br/><input class="slider" type="range" id="c1_slider" max=40 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket()" value=0/>
+	<br/><b>2nd Circle Ratio: <output for="c2_slider" id="c2_out">1.00</output></b>
+		<br/><input class="slider" type="range" id="c2_slider" max=40 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket();" value=0/>
+	<br/><b>3rd Circle Ratio: 1.00</b>
 </body>
 </html>
