@@ -1,14 +1,9 @@
-Testing!!
-Ian Dimock
+<html>
+<head>
+<script src="gasket.js"></script>
+</head>
 <br/>
-<canvas id="myCanvas" width="200" height="200"
-    style="border:5px solid #000000;">
+<canvas id="gasket" width="600" height="600"
+    style="border:5px solid #000000;" onclick="drawGasket()">
 </canvas>
-
-<script>
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.beginPath();
-ctx.arc(95,50,40,0,2*Math.PI);
-ctx.stroke();
-</script>
+</html>
