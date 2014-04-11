@@ -1,7 +1,7 @@
 function drawGasket() {
 	var gask = document.getElementById("gasket");
 	var ctx = gask.getContext("2d");
-	var depth = 6;
+	var depth = 18;
 	
 	var layers = new Array(depth);
 	var c01 = makeCircle(300, 150, 129.903, 1);
@@ -10,7 +10,7 @@ function drawGasket() {
 	drawCircle(ctx, c01);
 	drawCircle(ctx, c02);
 	drawCircle(ctx, c03);
-	var c04 = calcCircle(c01,c02,c03,-1);
+	var c04 = makeCircle(300, 300, 279.90206, -1);
 	drawCircle(ctx, c04);
 	layers[0] = [[c01,c02,c03],[c01,c02,c04],[c01,c03,c04],[c02,c03,c04]];
 	for(var i = 1; i < depth; i++ ){
@@ -21,10 +21,12 @@ function drawGasket() {
 			var c2 = layers[i-1][j][1];
 			var c3 = layers[i-1][j][2];
 			var c4 = calcCircle(c1, c2, c3, 1);
-			drawCircle(ctx,c4);
-			layers[i].push([c1,c2,c4]);
-			layers[i].push([c1,c3,c4]);
-			layers[i].push([c2,c3,c4]);
+			if(c4.r > 0.5) {
+				toDraw.push(c4);
+				layers[i].push([c1,c2,c4]);
+				layers[i].push([c1,c3,c4]);
+				layers[i].push([c2,c3,c4]);
+			}
 		}
 		for(var d = 0; d < toDraw.length; d++) {
 			drawCircle(ctx, toDraw[d]);
@@ -47,11 +49,18 @@ function calcCircle(c1, c2, c3, curve) {
 	var z3 = new Complex(c3.x, c3.y).finalize();
 	var z4 = new Complex(0,0);
 	z4 = z4.add(k1.mult(k2.mult(z1.mult(z2)))).add(k2.mult(k3.mult(z2.mult(z3)))).add(k1.mult(k3.mult(z1.mult(z3))));
-	z4 = z4.sqrt();
-	z4 = z4.mult(new Complex(2,0)).mult(curve);
-	z4 = z4.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
-	z4 = z4.divide(k4);
-	var c4 = makeCircle(z4.real, z4.im, Math.abs(1/k4.real), curve.real);
+	z4 = z4.sqrt().finalize();
+	z4a = z4.mult(new Complex(2,0)).mult(curve);
+	z4a = z4a.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
+	z4a = z4a.divide(k4);
+	var c4 = makeCircle(z4a.real, z4a.im, Math.abs(1/k4.real), curve.real);
+	var dist = Math.sqrt(Math.pow(c1.x - c4.x,2) + Math.pow(c1.y - c4.y,2));
+	if (Math.abs(dist - (c1.curve*c4.r + c1.r)) > 0.1) {
+		z4b = z4.mult(new Complex(-2,0)).mult(curve);
+		z4b = z4b.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
+		z4b = z4b.divide(k4);
+		var c4 = makeCircle(z4b.real, z4b.im, Math.abs(1/k4.real), curve.real);
+	}
 	return c4;
 }
 
