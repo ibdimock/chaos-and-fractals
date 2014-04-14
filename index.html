@@ -11,10 +11,15 @@
 	<br/><b>Depth: <output for="depth_slider" id="depth_out"></output></b>	
 	<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" value=1/>
 		
-	<br/><b>1st Circle Ratio: <output for="c1_slider" id="c1_out">1.00</output></b>
+	<br/><b>Ratio - Radius C1 : Radius C3 - <output for="c1_slider" id="c1_out">1.00</output></b>
 		<br/><input class="slider" type="range" id="c1_slider" max=40 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket()" value=0/>
-	<br/><b>2nd Circle Ratio: <output for="c2_slider" id="c2_out">1.00</output></b>
+	<br/><b>Ratio - Radius C2 : Radius C3 -<output for="c2_slider" id="c2_out">1.00</output></b>
 		<br/><input class="slider" type="range" id="c2_slider" max=40 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket();" value=0/>
-	<br/><b>3rd Circle Ratio: 1.00</b>
+	<br/>
+	<p>
+	<b>Instructions: </b> 
+	<br/>Move the depth slider to control how many iterations of the Apollonian Gasket to display (this updates the image immediately).
+	<br/>Move the ratio sliders to adjust the ratio between the radii of the 3 starting circles (this updates the image once the ratio is selected).
+	</p>
 </body>
 </html>

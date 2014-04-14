@@ -7,13 +7,42 @@ function drawGasket() {
 	ctx.clearRect(0,0,600,600);
 	var depth = document.getElementById("depth_slider").value;
 	document.getElementById("depth_out").value = depth;
+	ctx.textAlign = 'center';
 	
-	for(var d = 0; d < depth; d++) {
+	drawCircle(ctx, circles[0][3]);
+	drawCircle(ctx, circles[0][0]);
+	fsize = Math.min(30,circles[0][0].r)
+	ctx.font = fsize.toFixed(1).toString() + "px Arial";
+	ctx.strokeText("C1",circles[0][0].x,circles[0][0].y + fsize/2);
+	
+	drawCircle(ctx, circles[0][1]);
+	fsize = Math.min(30,circles[0][1].r)
+	ctx.font = fsize.toFixed(1).toString() + "px Arial";
+	ctx.strokeText("C2",circles[0][1].x,circles[0][1].y + fsize/2);
+	
+	drawCircle(ctx, circles[0][2]);
+	fsize = Math.min(30,circles[0][2].r)
+	ctx.font = fsize.toFixed(1).toString() + "px Arial";
+	ctx.strokeText("C3",circles[0][2].x,circles[0][2].y + fsize/2);
+	
+	for(var d = 1; d < depth; d++) {
 		for(var i = 0; i < circles[d].length; i++){
 			drawCircle(ctx, circles[d][i]);
 		}
 	}
 	
+}
+
+function already_drawn(c) {
+	for(var d = 0; d < circles.length; d++) {
+		for(var i = 0; i < circles[d].length; i++){
+			var dist = Math.sqrt(Math.pow(c.x - circles[d][i].x,2) + Math.pow(c.y - circles[d][i].y,2))
+			if (dist < 0.1 && Math.abs(c.r - circles[d][i].r) < 0.1) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 function updateRatios() {
@@ -78,39 +107,85 @@ function calcCircle(c1, c2, c3, curve) {
 	var k1 = c1.curve/c1.r;
 	var k2 = c2.curve/c2.r;
 	var k3 = c3.curve/c3.r;
-	var k4 = k1 + k2 + k3 + curve*2*Math.sqrt(k1*k2+k2*k3+k3*k1);
+	var descr = k1*k2+k2*k3+k3*k1;
+	descr = Math.max(descr,0);
+	var k4a = k1 + k2 + k3 + curve*2*Math.sqrt(descr);
+	var k4b = k1 + k2 + k3 - curve*2*Math.sqrt(descr);
 	k1 = new Complex(k1,0).finalize();
 	k2 = new Complex(k2,0).finalize();
 	k3 = new Complex(k3,0).finalize();
-	k4 = new Complex(k4,0).finalize();
+	k4a = new Complex(k4a,0).finalize();
+	k4b = new Complex(k4b,0).finalize();
 	var z1 = new Complex(c1.x, c1.y).finalize();
 	var z2 = new Complex(c2.x, c2.y).finalize();
 	var z3 = new Complex(c3.x, c3.y).finalize();
-	var z4 = new Complex(0,0);
-	z4 = z4.add(k1.mult(k2.mult(z1.mult(z2)))).add(k2.mult(k3.mult(z2.mult(z3)))).add(k1.mult(k3.mult(z1.mult(z3))));
-	z4 = z4.sqrt().finalize();
-	z4a = z4.mult(new Complex(2,0)).mult(curve);
-	z4a = z4a.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
-	z4a = z4a.divide(k4);
-	var c4 = makeCircle(z4a.real, z4a.im, Math.abs(1/k4.real), curve.real);
-	var dist = Math.sqrt(Math.pow(c1.x - c4.x,2) + Math.pow(c1.y - c4.y,2));
-	if (Math.abs(dist - (c1.curve*c4.r + c1.r)) > 0.1) {
-		z4b = z4.mult(new Complex(-2,0)).mult(curve);
-		z4b = z4b.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
-		z4b = z4b.divide(k4);
-		var c4 = makeCircle(z4b.real, z4b.im, Math.abs(1/k4.real), curve.real);
+	var z4a = new Complex(0,0);
+	var z4b = new Complex(0,0);
+	z4a = z4a.add(k1.mult(k2.mult(z1.mult(z2)))).add(k2.mult(k3.mult(z2.mult(z3)))).add(k1.mult(k3.mult(z1.mult(z3))));
+	z4b = z4b.add(k1.mult(k2.mult(z1.mult(z2)))).add(k2.mult(k3.mult(z2.mult(z3)))).add(k1.mult(k3.mult(z1.mult(z3))));
+	z4a = z4a.sqrt().finalize();
+	z4b = z4b.sqrt().finalize();
+	var z4a1 = z4a.mult(new Complex(2,0)).mult(curve);
+	var z4a2 = z4a.mult(new Complex(-2,0)).mult(curve);
+	var z4b1 = z4b.mult(new Complex(2,0)).mult(curve);
+	var z4b2 = z4b.mult(new Complex(-2,0)).mult(curve);
+	z4a1 = z4a1.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
+	z4a2 = z4a2.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
+	z4b1 = z4b1.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
+	z4b2 = z4b2.add(z1.mult(k1)).add(z2.mult(k2)).add(z3.mult(k3));
+	z4a1 = z4a1.divide(k4a);
+	z4a2 = z4a2.divide(k4a);
+	z4b1 = z4b1.divide(k4b);
+	z4b2 = z4b2.divide(k4b);
+	var erra1 = Math.abs(Math.sqrt(Math.pow(c1.x - z4a1.real,2) + Math.pow(c1.y - z4a1.im,2)) - (c1.curve*Math.abs(1/k4a.real) + c1.r));
+	var c4a1 = makeCircle(z4a1.real, z4a1.im, Math.abs(1/k4a.real), curve.real);
+	var erra2 = Math.abs(Math.sqrt(Math.pow(c1.x - z4a2.real,2) + Math.pow(c1.y - z4a2.im,2)) - (c1.curve*Math.abs(1/k4a.real) + c1.r));
+	var c4a2 = makeCircle(z4a2.real, z4a2.im, Math.abs(1/k4a.real), curve.real);
+	var errb1 = Math.abs(Math.sqrt(Math.pow(c1.x - z4b1.real,2) + Math.pow(c1.y - z4b1.im,2)) - (c1.curve*Math.abs(1/k4b.real) + c1.r));
+	var c4b1 = makeCircle(z4b1.real, z4b1.im, Math.abs(1/k4b.real), curve.real);
+	var errb2 = Math.abs(Math.sqrt(Math.pow(c1.x - z4b2.real,2) + Math.pow(c1.y - z4b2.im,2)) - (c1.curve*Math.abs(1/k4b.real) + c1.r));
+	var c4b2 = makeCircle(z4b2.real, z4b2.im, Math.abs(1/k4b.real), curve.real);
+	
+	if( already_drawn(c4a1) ) {
+		erra1 = Infinity;
+	}
+	if( already_drawn(c4a2) ) {
+		erra2 = Infinity;
+	}
+	if( already_drawn(c4b1) ) {
+		errb1 = Infinity;
+	}
+	if( already_drawn(c4b2) ) {
+		errb2 = Infinity;
+	}
+	
+	var m = Math.min(erra1, erra2, errb1, errb2);
+	var c4= 0;
+	if( m == erra1 ) {
+		c4 = c4a1;
+	} else if( m == erra2 ) {
+		c4 = c4a2;
+	} else if( m == errb1 ) {
+		c4 = c4b1;
+	} else {
+		c4 = c4b2;
 	}
 	return c4;
 }
 
 function calcBase(r1, r2, outer) {
-	a = 1 + 1/(r1*r1) + 1/(r2*r2) - 2*(1/(r1*r2) + 1/r1 + 1/r2);
-	b = -2*(1/(r1*outer) + 1/(r2*outer) + 1/outer);
-	c = 1/(outer*outer);
-	
+	var a = 1/(outer*outer);
+	var b = -2*(1/(r1*outer) + 1/(r2*outer) + 1/outer);
+	var c = 1 + 1/(r1*r1) + 1/(r2*r2) - 2*(1/(r1*r2) + 1/r1 + 1/r2);
 
-	basei = (-b - Math.sqrt(b*b - 4*a*c))/(2*a);
-	base = 1/basei;
+	var base1 = (-b + Math.sqrt(b*b - 4*a*c))/(2*a);
+	var base2 = (-b - Math.sqrt(b*b - 4*a*c))/(2*a);
+	
+	if(base1 > 0 && base1 < 300) {
+		var base = base1;
+	} else {
+		var base = base2;
+	}
 	
 	
 	outer = Math.abs(outer);
