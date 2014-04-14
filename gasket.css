@@ -1,4 +1,41 @@
+body {
+	margin-left: 20%;
+	margin-right: 20%;
+	font-family:"Verdana";
+}
+
+h1 {
+	text-align: center;
+}
+
+#canvas_cont {
+   width: 100%;
+   text-align:center;
+}
+
+.gasket_app {
+	display:inline;
+	border:5px solid #000000;
+}
+
+.param {
+	margin-left:auto;
+	margin-right:auto;
+	width:60%;
+}
+
+.instructions {
+	margin-left:auto;
+	margin-right:auto;
+	width:80%;
+}
+
 .slider {
-	width: 400px;
+	width: 100%;
 	border: 5px
+}
+
+.eq {
+	padding: 10px;
+	margin-left: 10%;
 }

@@ -8,6 +8,8 @@ function drawGasket() {
 	var depth = document.getElementById("depth_slider").value;
 	document.getElementById("depth_out").value = depth;
 	ctx.textAlign = 'center';
+	ctx.font = "30px Arial";
+	ctx.strokeText("C4",130,565);
 	
 	drawCircle(ctx, circles[0][3]);
 	drawCircle(ctx, circles[0][0]);

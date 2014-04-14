@@ -1,25 +1,64 @@
 <html>
 <head>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="gasket.css">
 	<script src="gasket.js"></script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+	</script>
+	<script type="text/javascript"
+		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
 </head>
 <body>
 <br/>
-	<canvas id="gasket" width="600" height="600"
-		style="border:5px solid #000000">
-	</canvas>
-	<br/><b>Depth: <output for="depth_slider" id="depth_out"></output></b>	
-	<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" value=1/>
-		
-	<br/><b>Ratio - Radius C1 : Radius C3 - <output for="c1_slider" id="c1_out">1.00</output></b>
-		<br/><input class="slider" type="range" id="c1_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket()" value=0/>
-	<br/><b>Ratio - Radius C2 : Radius C3 - <output for="c2_slider" id="c2_out">1.00</output></b>
-		<br/><input class="slider" type="range" id="c2_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket();" value=0/>
-	<br/>
+	<h1>Apollonian Gasket</h1>
+	<h2>Introduction</h2>
 	<p>
+	The <i>Apollonian Gasket</i> is a non-self-similar fractal named after Apollonius of Perga, a greek mathematician. The construction of the fractal is very simple, and follows a simple iterative rule. First we start with an exterial bounding circle: $C4$. Inside $C4$ we have three mutually tangent circles $C1$, $C2$, $C3$.
+	
+	The iterative process is as follows:
+	<ol>
+		<li> Pick any three mutually tangent circles: $A$, $B$, $C$.
+		<li> There exists a circle, $D$, internally tangent to $A$, $B$, and $C$.
+		<li> Draw circle $D$.
+		<li> Repeat for every triple of mutually tangent circles.
+	</ol>
+	The first iteration uses the 4 triples: $(C1, C2, C3), (C1, C2, C4), (C1, C3, C4), (C2, C3, C4)$. 
+	The convergence of these iterations is the Apollonian Gasket for that specific starting configuration $(C1, C2, C3, C4)$.
+	Below is an interactive applet to see these iterations for various starting configurations.
+	</p>
+	<div id="canvas_cont">
+		<canvas class="gasket_app" id="gasket" width="600px" height="600px">
+		Your browser doesn't support canvas.
+		</canvas>
+	</div>
+	<p class="param">
+		<b>Depth: <output for="depth_slider" id="depth_out"></output></b>	
+		<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" value=1/>
+	</p>
+	<p class="param">
+		<b>Ratio - Radius C1 : Radius C3 - <output for="c1_slider" id="c1_out">1.00</output></b>
+		<br/><input class="slider" type="range" id="c1_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket()" value=0/>
+	</p>
+	<p class="param">
+		<b>Ratio - Radius C2 : Radius C3 - <output for="c2_slider" id="c2_out">1.00</output></b>
+		<br/><input class="slider" type="range" id="c2_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket();" value=0/>
+	</p>
+	<p class="instructions">
 	<b>Instructions: </b> 
 	<br/>Move the depth slider to control how many iterations of the Apollonian Gasket to display (this updates the image immediately).
-	<br/>Move the ratio sliders to adjust the ratio between the radii of the 3 starting circles (this updates the image once the ratio is selected).
+	<br/>Move the ratio sliders to adjust the ratio between the radii of the 3 starting circles (this updates the image only once the ratios are set).
 	</p>
+	<h2> Descarte's Theorem</h2>
+	<p>
+	In 1643 René Descarte discovered a relationship between the ratios of the radii of four mutually tangent circles.
+	To properly state the theorem we must first define curvature for circles.
+	Curvature $k$ for a circle with radius $r$ is define simply as:
+	<div class="eq">$k = \pm\frac{1}{r}$.</div>
+	In our case a negative curvature indicate all the other circles are interior, so only the bounding circle has negative curvature.
+	All the other circles will have positive curvature.
+	</p>
+	<img src="http://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg" alt="René Descartes" height="300px" style="float:right"></img>
 </body>
 </html>
