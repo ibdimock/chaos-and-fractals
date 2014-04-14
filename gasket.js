@@ -36,7 +36,7 @@ function drawGasket() {
 function already_drawn(c) {
 	for(var d = 0; d < circles.length; d++) {
 		for(var i = 0; i < circles[d].length; i++){
-			var dist = Math.sqrt(Math.pow(c.x - circles[d][i].x,2) + Math.pow(c.y - circles[d][i].y,2))
+			var dist = Math.sqrt(Math.abs(Math.pow(c.x - circles[d][i].x,2) + Math.pow(c.y - circles[d][i].y,2)))
 			if (dist < 0.1 && Math.abs(c.r - circles[d][i].r) < 0.1) {
 				return true;
 			}
@@ -178,13 +178,12 @@ function calcBase(r1, r2, outer) {
 	var b = -2*(1/(r1*outer) + 1/(r2*outer) + 1/outer);
 	var c = 1 + 1/(r1*r1) + 1/(r2*r2) - 2*(1/(r1*r2) + 1/r1 + 1/r2);
 
-	var base1 = (-b + Math.sqrt(b*b - 4*a*c))/(2*a);
-	var base2 = (-b - Math.sqrt(b*b - 4*a*c))/(2*a);
+	var base1 = Math.abs((-b + Math.sqrt(b*b - 4*a*c))/(2*a));
+	var base2 = Math.abs((-b - Math.sqrt(b*b - 4*a*c))/(2*a));
 	
-	if(base1 > 0 && base1 < 300) {
-		var base = base1;
-	} else {
-		var base = base2;
+	var base = Math.max(base1,base2);
+	if( base > -outer ) {
+		base = Math.min(base1,base2);
 	}
 	
 	
