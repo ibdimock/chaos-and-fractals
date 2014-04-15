@@ -1,7 +1,19 @@
+html {
+	background: -webkit-linear-gradient(left, grey, white, white, white, grey); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(right, grey, white, white, white, grey); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(right, grey, white, white, white, grey); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to right, grey, white, white, white, grey); /* Standard syntax */
+}
+
 body {
 	margin-left: 20%;
 	margin-right: 20%;
+	padding-left:20px;
+	padding-right:20px;
+	margin-top:0px;
+	padding-top:0px;
 	font-family:"Verdana";
+	background-color: #FFFFFF;
 }
 
 h1 {
@@ -46,4 +58,16 @@ img {
 
 .thm {
 	padding: 30px;
+}
+
+footer {
+	margin-left: 10%;
+	margin-right: 10%;
+	font-family:"Verdana";
+	font-size:12px;
+}
+
+a {
+	text-decoration:none;
+	color:black;
 }
