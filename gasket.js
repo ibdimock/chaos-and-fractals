@@ -4,32 +4,34 @@ var circles;
 function drawGasket() {
 	var gask = document.getElementById("gasket");
 	var ctx = gask.getContext("2d");
+	var show_label = document.getElementById("show_label").checked;
 	ctx.clearRect(0,0,600,600);
 	var depth = document.getElementById("depth_slider").value;
 	document.getElementById("depth_out").value = depth;
-	ctx.textAlign = 'center';
-	ctx.font = "30px Arial";
-	ctx.strokeText("C4",130,565);
+
+	drawCircle(ctx, circles[0][3], true);
+	drawCircle(ctx, circles[0][0], false);
+	drawCircle(ctx, circles[0][1], false);	
+	drawCircle(ctx, circles[0][2], false);
 	
-	drawCircle(ctx, circles[0][3]);
-	drawCircle(ctx, circles[0][0]);
-	fsize = Math.min(30,circles[0][0].r)
-	ctx.font = fsize.toFixed(1).toString() + "px Arial";
-	ctx.strokeText("C1",circles[0][0].x,circles[0][0].y + fsize/2);
-	
-	drawCircle(ctx, circles[0][1]);
-	fsize = Math.min(30,circles[0][1].r)
-	ctx.font = fsize.toFixed(1).toString() + "px Arial";
-	ctx.strokeText("C2",circles[0][1].x,circles[0][1].y + fsize/2);
-	
-	drawCircle(ctx, circles[0][2]);
-	fsize = Math.min(30,circles[0][2].r)
-	ctx.font = fsize.toFixed(1).toString() + "px Arial";
-	ctx.strokeText("C3",circles[0][2].x,circles[0][2].y + fsize/2);
-	
+	if(show_label) {
+		ctx.textAlign = 'center';
+		ctx.fillStyle = "#000000";
+		ctx.font = "30px Arial";
+		ctx.fillText("C4",130,565);
+		var fsize = Math.min(30,circles[0][0].r)
+		ctx.font = fsize.toFixed(1).toString() + "px Arial";
+		ctx.fillText("C1",circles[0][0].x,circles[0][0].y + fsize/2);
+		fsize = Math.min(30,circles[0][1].r)
+		ctx.font = fsize.toFixed(1).toString() + "px Arial";
+		ctx.fillText("C2",circles[0][1].x,circles[0][1].y + fsize/2);
+		fsize = Math.min(30,circles[0][2].r)
+		ctx.font = fsize.toFixed(1).toString() + "px Arial";
+		ctx.fillText("C3",circles[0][2].x,circles[0][2].y + fsize/2);
+	}
 	for(var d = 1; d < depth; d++) {
 		for(var i = 0; i < circles[d].length; i++){
-			drawCircle(ctx, circles[d][i]);
+			drawCircle(ctx, circles[d][i], false);
 		}
 	}
 	
@@ -54,7 +56,10 @@ function updateRatios() {
 	document.getElementById("c2_out").value = (1 + r2*0.1).toFixed(2);
 }
 
+// Init
 window.onload = function() {
+	document.getElementById("show_label").checked = true;
+	document.getElementById("colour_picker").value = "FFFFFF";
 	document.getElementById("depth_slider").value = 1;
 	document.getElementById("depth_out").value = 1;
 	document.getElementById("c1_slider").value = 0;
@@ -220,9 +225,17 @@ function makeCircle(x, y, r, curve){
 	return circle;
 }
 
-function drawCircle(ctx, circle) {
+function drawCircle(ctx, circle, bounding) {
+	var colour = document.getElementById("colour_picker").value;
 	ctx.beginPath();
 	ctx.arc(circle.x, circle.y, circle.r,0,2*Math.PI);
+	if(!bounding) {
+		ctx.fillStyle = "#" + colour;
+		ctx.fill();
+	} else {
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fill();
+	}
 	ctx.stroke();
 }
 

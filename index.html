@@ -8,6 +8,7 @@
 	<script type="text/x-mathjax-config">
 		MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 	</script>
+	<script type="text/javascript" src="jscolor/jscolor.js"></script>
 	<script type="text/javascript"
 		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 	</script>
@@ -49,12 +50,18 @@
 		<b>Ratio - Radius $C_2$ : Radius $C_3$ - <output for="c2_slider" id="c2_out">1.00</output></b>
 		<br/><input class="slider" type="range" id="c2_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket();" value=0/>
 	</p>
+	<p class="param">
+		<b>Fill Colour: </b><input class="color" id="colour_picker" onchange="drawGasket()"></input>
+	</p>
+	<p class="param">
+		<b>Show Label: </b><input type="checkbox" id="show_label" onclick="drawGasket()"></input>
+	</p>
 	<p class="instructions">
 	<b>Instructions: </b> 
 	<br/>Move the depth slider to control how many iterations of the Apollonian Gasket to display (this updates the image immediately).
 	<br/>Move the ratio sliders to adjust the ratio between the radii of the 3 starting circles (this updates the image only once the ratios are set).
 	</p>
-	<h2> Descartes' Theorem</h2>
+	<h2>Descartes' Theorem</h2>
 	<p>
 	<img src="http://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg" alt="René Descartes" height="300px" style="float:right"></img>
 	In 1643 René Descartes discovered a relationship between the ratios of the radii of four mutually tangent circles.
@@ -71,6 +78,19 @@
 	We arrive at the formula:
 		<div class="eq">$k_4 = k_1 + k_2 + k_3 \pm\sqrt{k_1k_2 + k_2k_3 + k_3k_1}$</div>
 	We note again the presence of a $\pm$. The two solutions to this equation represent the circles interior and exterior to the circles $C_1, C_2, C_3$.
+	This theorem gives a method to determine the curvature and therefore radius of the circles in our iterations.
+	To determine the positions, we must look at a more generalized theorem.
+	</p>
+	<h2>Complex Descartes Theorem</h2>
+	<p>
+	The complex version of Descartes' Theorem gives a relationship between both the curvatures and positions of four mutually tangent circles.
+	We define a complex value $z_j = x_j + iy_j$, where $(x_j,y_j)$ is the $j^{th}$ circles' position. With curvature $k_j$ defined as above, the Complex Descartes Theorem states:
+		<div class="thm">Any four mutually tangent circles $C_1, C_2, C_3, C_4$ with curvatures $k_1, k_2, k_3, k_4$ and $z_1, z_2, z_3, z_4$ as defined above, must satisfy
+			<div class="eq">$(k_1z_1 + k_2z_2 + k_3z_3 + k_4z_4)^2 = 2(k_1^2z_1^2 + k_2^2z_2^2 + k_3^2z_3^2 + k_4^2z_4^2)$.</div>
+		</div>
+	From the original version above we can solve for $k_4$ as before, and rearrange this formula to determine $z_4$ as follows:
+		<div class="eq">$z_4 = \frac{k_1z_1 + k_2z_2 + k_3z_3 \pm2\sqrt{k_1k_2z_1z_2 + k_2k_3z_2z_3 + k_3k_1z_3z_1}}{k_4}$.</div>
+	Again we have a $\pm$ producing two solutions. We must choose the appropriate one when constructing the Apollonian Gasket.
 	</p>
 </body>
 </html>
