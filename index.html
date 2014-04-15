@@ -15,7 +15,9 @@
 	<h1>Apollonian Gasket</h1>
 	<h2>Introduction</h2>
 	<p>
-	The <i>Apollonian Gasket</i> is a non-self-similar fractal named after Apollonius of Perga, a greek mathematician. The construction of the fractal is very simple, and follows a simple iterative rule. First we start with an exterial bounding circle: $C4$. Inside $C4$ we have three mutually tangent circles $C1$, $C2$, $C3$.
+	The <i>Apollonian Gasket</i> is a non-self-similar fractal named after Apollonius of Perga, a greek mathematician. 
+	The construction of the fractal is very simple, and follows a simple iterative rule. 
+	First we start with an exterial bounding circle: $C_4$. Inside $C_4$ we have three mutually tangent circles $C_1$, $C_2$, $C_3$.
 	
 	The iterative process is as follows:
 	<ol>
@@ -24,8 +26,8 @@
 		<li> Draw circle $D$.
 		<li> Repeat for every triple of mutually tangent circles.
 	</ol>
-	The first iteration uses the 4 triples: $(C1, C2, C3), (C1, C2, C4), (C1, C3, C4), (C2, C3, C4)$. 
-	The convergence of these iterations is the Apollonian Gasket for that specific starting configuration $(C1, C2, C3, C4)$.
+	The first iteration uses the 4 triples: $(C_1, C_2, C_3), (C_1, C_2, C_4), (C_1, C_3, C_4), (C_2, C_3, C_4)$. 
+	The convergence of these iterations is the Apollonian Gasket for that specific starting configuration $(C_1, C_2, C_3, C_4)$.
 	Below is an interactive applet to see these iterations for various starting configurations.
 	</p>
 	<div id="canvas_cont">
@@ -38,11 +40,11 @@
 		<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" value=1/>
 	</p>
 	<p class="param">
-		<b>Ratio - Radius C1 : Radius C3 - <output for="c1_slider" id="c1_out">1.00</output></b>
+		<b>Ratio - Radius $C_1$ : Radius $C_3$ - <output for="c1_slider" id="c1_out">1.00</output></b>
 		<br/><input class="slider" type="range" id="c1_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket()" value=0/>
 	</p>
 	<p class="param">
-		<b>Ratio - Radius C2 : Radius C3 - <output for="c2_slider" id="c2_out">1.00</output></b>
+		<b>Ratio - Radius $C_2$ : Radius $C_3$ - <output for="c2_slider" id="c2_out">1.00</output></b>
 		<br/><input class="slider" type="range" id="c2_slider" max=25 min=0 step=1 oninput="updateRatios()" onmouseup="genGasket();drawGasket();" value=0/>
 	</p>
 	<p class="instructions">
@@ -50,15 +52,23 @@
 	<br/>Move the depth slider to control how many iterations of the Apollonian Gasket to display (this updates the image immediately).
 	<br/>Move the ratio sliders to adjust the ratio between the radii of the 3 starting circles (this updates the image only once the ratios are set).
 	</p>
-	<h2> Descarte's Theorem</h2>
+	<h2> Descartes' Theorem</h2>
 	<p>
-	In 1643 René Descarte discovered a relationship between the ratios of the radii of four mutually tangent circles.
+	<img src="http://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg" alt="René Descartes" height="300px" style="float:right"></img>
+	In 1643 René Descartes discovered a relationship between the ratios of the radii of four mutually tangent circles.
 	To properly state the theorem we must first define curvature for circles.
 	Curvature $k$ for a circle with radius $r$ is define simply as:
-	<div class="eq">$k = \pm\frac{1}{r}$.</div>
-	In our case a negative curvature indicate all the other circles are interior, so only the bounding circle has negative curvature.
-	All the other circles will have positive curvature.
+		<div class="eq">$k = \pm\frac{1}{r}$.</div>
+	In our case, a circle with negative curvature indicates that all the other circles are interior to it. Thus only the bounding circle will have negative curvature.
+	All of the other circles will have positive curvature. With curvature defined we can state Descartes' Theorem:
+		<div class="thm">
+		For four circles $C_1, C_2, C_3, C_4$ who are mutually tangent at 6 distinct points, with curvatures $k_1, k_2, k_3, k_4$, the curvatures must satisfy:
+			<div class="eq">$(k_1 + k_2 + k_3 + k_4)^2 = 2(k_1^2 + k_2^2 + k_3^2 + k_4^2)$.</div>
+		</div>
+	Using this equation, and knowing the curvature of three mutually tangent circles, we can then solve for a fourth curvature, producing a circle mutually tangent to the initial three.
+	We arrive at the formula:
+		<div class="eq">$k_4 = k_1 + k_2 + k_3 \pm\sqrt{k_1k_2 + k_2k_3 + k_3k_1}$</div>
+	We note again the presence of a $\pm$. The two solutions to this equation represent the circles interior and exterior to the circles $C_1, C_2, C_3$.
 	</p>
-	<img src="http://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg" alt="René Descartes" height="300px" style="float:right"></img>
 </body>
 </html>
