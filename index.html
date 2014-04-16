@@ -42,7 +42,7 @@
 	</div>
 	<p class="param">
 		<b>Depth: <output for="depth_slider" id="depth_out"></output></b>	
-		<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" value=1/>
+		<br/><input class="slider" type="range" id="depth_slider" max=20 min=1 step=1 oninput="drawGasket()" onmouseup="drawGasket()" value=1/>
 	</p>
 	<p class="param">
 		<b>Ratio - Radius $C_1$ : Radius $C_3$ - <output for="c1_slider" id="c1_out">1.00</output></b>
