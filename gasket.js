@@ -85,9 +85,6 @@ function genGasket() {
 	var c01 = cs[0];
 	var c02 = cs[1];
 	var c03 = cs[2];
-//	var c01 = makeCircle(300, 150, 129.903, 1);
-//	var c02 = makeCircle(170.096, 375, 129.903, 1);
-//	var c03 = makeCircle(429.903, 375, 129.903, 1);
 	
 	layers[0] = [[c01,c02,c03],[c01,c02,c04],[c01,c03,c04],[c02,c03,c04]];
 	circles[0] =  [c01,c02,c03,c04];

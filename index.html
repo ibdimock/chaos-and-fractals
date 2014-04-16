@@ -31,8 +31,10 @@
 	</ol>
 	The first iteration uses the 4 triples: $(C_1, C_2, C_3), (C_1, C_2, C_4), (C_1, C_3, C_4), (C_2, C_3, C_4)$. 
 	The convergence of these iterations is the Apollonian Gasket for that specific starting configuration $(C_1, C_2, C_3, C_4)$.
-	Below is an interactive applet to see these iterations for various starting configurations.
+	The construction of the gasket starts with 3 interior circles. The first iteration adds 4 additional circles. The second iterations adds 12 additional circles.
+	In general on the $n^{th}$ iteration we add $4\cdot3^n$ circles. Summing this geometric series we can find that after $n$ iterations there are $2\cdot3^{n} + 1$ interior circles in total.
 	</p>
+	<h2>Applet</h2>
 	<div id="canvas_cont">
 		<canvas class="gasket_app" id="gasket" width="600px" height="600px">
 		Your browser doesn't support canvas.
@@ -91,6 +93,58 @@
 	From the original version above we can solve for $k_4$ as before, and rearrange this formula to determine $z_4$ as follows:
 		<div class="eq">$z_4 = \frac{k_1z_1 + k_2z_2 + k_3z_3 \pm2\sqrt{k_1k_2z_1z_2 + k_2k_3z_2z_3 + k_3k_1z_3z_1}}{k_4}$.</div>
 	Again we have a $\pm$ producing two solutions. We must choose the appropriate one when constructing the Apollonian Gasket.
+	</p>
+	<h2>Dimension</h2>
+	<p>
+	There is no simple closed form for the dimension of the Apollonian gasket, but several bounds and estimations have been refined over the years.
+	David W. Boyd gave bounds on the dimension in a 1973 paper. He showed that the dimension of the Apollonian Gasket, $\Lambda$, was bounded:
+		<div class="eq">$1.300197 < dim(\Lambda) < 1.314534$</div>
+	In 1997 Curtis T. McMullen developed an algorithm to accurately estimate the Hausdorff dimension of Kleinian groups, of which the Apollonian gasket is a limit set.
+	He provided an estimate of the Hausdorff dimension of the Apollpnian gasket: $H. dim(\Lambda) = 1.305688$. This is in agreement with the result proved by Boyd.
+	</p>
+	<h2>Integer Apollonian Gaskets</h2>
+	<p>
+	There are special Apollonian Gaskets that have the property that all circles have integer curvature. In fact, we can show that if the original quadruple has integer curvatures,
+	then the entire packing will have integer curvatures.
+		<div class="thm">
+			<i>Proof:</i>
+			<br/>
+			From Descartes Theorm we have:
+				<div class="eq">$k_4 = k_1 + k_2 + k_3 + 2\sqrt{k_1k_2 + k_2k_3 + k_3k_1}$</div>
+				<div class="eq">$k_4' = k_1 + k_2 + k_3 - 2\sqrt{k_1k_2 + k_2k_3 + k_3k_1}$</div>
+			From this we have:
+				<div class="eq">$k_4' = 2(k_1 + k_2 + k_3) - k_4$,</div>
+			and so if we start with an integer quadruple $(k_1, k_2, k_3, k_4)$, then $k_4'$ will have integer curvature.
+			<br/>
+			Note: There will exists symmetric $k_1', k_2', k_3'$ with integer curvatures.
+		</div>
+	So by finding integer quadruples satisfying Descartes' theorem it is possible to construct integer gaskets.
+	Some examples:
+		<div class="eq">$(-1,2,2,3)$: $(-1 + 2 + 2 + 3)^2 = 2(1 + 4 + 4 + 9) = 36$.</div>
+		<div class="eq">$(-3,5,8,8)$: $(-3 + 5 + 8 + 8)^2 = 2(9 + 25 + 64 + 64) = 324$.</div>
+		<div class="eq">$(-6,11,14,15)$: $(-6 + 11 + 14 + 15)^2  = 2(36 + 121 + 196 + 225)= 1156$.</div>
+	<div style="overflow:auto">
+		<figure style="float:left">
+			<img src="int(-1,2,2,3).png" alt="Integer Apollonian Packing (-1,2,2,3)" height="250px">
+			<figcaption>Integer Apollonian Packing (-1,2,2,3)</figcaption>
+		</figure>
+		<figure style="float:left">
+			<img src="int(-3,5,8,8).png" alt="Integer Apollonian Packing (-3,5,8,8)" height="250px">
+			<figcaption>Integer Apollonian Packing (-3,5,8,8)</figcaption>
+		</figure>
+		<figure style="float:left">
+			<img src="int(-6,11,14,15).png" alt="Integer Apollonian Packing (-6,11,14,15)" height="250px">
+			<figcaption>Integer Apollonian Packing (-6,11,14,15)</figcaption>
+		</figure>
+	</div>
+	There is a convention used to classify symmetries within the integer gaskets. These symmetries can be summarized by looking only at the largest five circles.
+	<ul>
+		<li>$C_1$ symmetry: None of the first five circles have equal curvature. Eg. Gasket defined by curvatures $(−6, 11, 14, 15, 23)$.</li>
+		<li>$D_1$ symmetry: Two of the first five circles have equal curvature. Eg. Gasket defined by curvatures $(−3, 5, 8, 8, 12)$.</li>
+		<li>$D_2$ symmetry: Two pairs of circles within the first five have equal curvatures. Eg. Gasket defined by curvatures $(−1, 2, 2, 3, 3)$.</li>
+		<li>$D_3$ symmetry: Three of the first five circles have equal curvature. No $D_3$ integer gaskets exist.
+	</ul>
+	It is easy to show that there are no $D_3$ gaskets, as their curvatures would need to satisfy $k_4 = 3k_1 + 2k_1\sqrt{3}$, and $\sqrt{3}$ is not integral.
 	</p>
 	<hr/>
 </body>
